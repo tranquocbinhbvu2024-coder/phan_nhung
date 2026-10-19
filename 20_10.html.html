@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Chúc Mừng Ngày Phụ Nữ Việt Nam 20/10</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Montserrat:wght@300;400;600;700&family=Playfair+Display:ital,wght@0,600;1,400&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            touch-action: none; /* Ngăn cuộn trang trên mobile khi lau sương */
+            user-select: none;
+            -webkit-user-select: none;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: #0d0614;
+            color: #ffffff;
+            overflow: hidden;
+            margin: 0;
+            padding: 0;
+            width: 100vw;
+            height: 100vh;
+        }
+
+        .font-cursive { font-family: 'Dancing Script', cursive; }
+        .font-serif-title { font-family: 'Playfair Display', serif; }
+
+        /* CANVAS LỚP SƯƠNG MÙ CHE PHỦ */
+        #fogCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 40; /* Nằm trên nội dung nhưng dưới Modal bức thư nếu mở */
+            cursor: pointer;
+            transition: opacity 1s ease-out;
+        }
+
+        /* CANVAS HẠT SAO & TRÁI TIM BAY BÊN DƯỚI */
+        #particleCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        /* Ambient Glow Effect */
+        .glow-heart-bg {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(244, 114, 182, 0.3) 0%, rgba(219, 39, 119, 0.12) 40%, rgba(13, 6, 20, 0) 70%);
+            filter: blur(50px);
+            z-index: 2;
+            animation: pulseGlow 4s infinite alternate ease-in-out;
+        }
+
+        @keyframes pulseGlow {
+            0% { transform: translate(-50%, -50%) scale(0.85); opacity: 0.6; }
+            100% { transform: translate(-50%, -50%) scale(1.15); opacity: 0.95; }
+        }
+
+        /* Floating Wish Cloud Tags */
+        .floating-tag {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 192, 203, 0.3);
+            box-shadow: 0 8px 32px 0 rgba(236, 72, 153, 0.25);
+            padding: 8px 18px;
+            border-radius: 30px;
+            color: #fbcfe8;
+            font-size: 0.9rem;
+            white-space: nowrap;
+            animation: floatTag 6s infinite ease-in-out alternate;
+            z-index: 10;
+            transition: all 0.3s ease;
+            pointer-events: auto;
+        }
+
+        .floating-tag:hover {
+            background: rgba(236, 72, 153, 0.3);
+            border-color: rgba(244, 114, 182, 0.8);
+            transform: scale(1.1) translateY(-4px) !important;
+            box-shadow: 0 0 25px rgba(244, 114, 182, 0.6);
+            cursor: pointer;
+        }
+
+        @keyframes floatTag {
+            0% { transform: translateY(0px) rotate(-1.5deg); }
+            50% { transform: translateY(-12px) rotate(1.5deg); }
+            100% { transform: translateY(-24px) rotate(-1.5deg); }
+        }
+
+        /* Neon & Glow Text */
+        .text-glow {
+            text-shadow: 0 0 10px rgba(244, 114, 182, 0.8),
+                         0 0 20px rgba(244, 114, 182, 0.5),
+                         0 0 30px rgba(219, 39, 119, 0.3);
+        }
+
+        .title-glow {
+            text-shadow: 0 0 20px #f472b6, 0 0 40px #db2777, 0 0 60px #9333ea;
+        }
+
+        /* Glassmorphism Card */
+        .glass-card {
+            background: rgba(20, 10, 30, 0.75);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(244, 114, 182, 0.4);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6), 0 0 30px rgba(236, 72, 153, 0.3);
+        }
+
+        .heart-beat {
+            animation: beat 1.3s infinite ease-in-out;
+        }
+
+        @keyframes beat {
+            0%, 100% { transform: scale(1); }
+            15% { transform: scale(1.25); }
+            30% { transform: scale(1); }
+            45% { transform: scale(1.15); }
+        }
+
+        .btn-shimmer {
+            background: linear-gradient(90deg, #ec4899, #8b5cf6, #ec4899);
+            background-size: 200% auto;
+            animation: shimmer 3s linear infinite;
+        }
+
+        @keyframes shimmer {
+            0% { background-position: 0% center; }
+            100% { background-position: 200% center; }
+        }
+
+        /* Custom Scrollbar */
+        .custom-scroll::-webkit-scrollbar { width: 5px; }
+        .custom-scroll::-webkit-scrollbar-track { background: rgba(255, 255, 255, 0.05); }
+        .custom-scroll::-webkit-scrollbar-thumb { background: rgba(244, 114, 182, 0.5); border-radius: 10px; }
+    </style>
+</head>
+<body class="flex flex-col items-center justify-between min-h-screen relative select-none">
+
+    <!-- CANVAS LỚP SƯƠNG MÙ CHE PHỦ TOÀN BỘ MÀN HÌNH -->
+    <canvas id="fogCanvas"></canvas>
+
+    <!-- NÚT LAU SẠCH SƯƠNG VÀ HƯỚNG DẪN BẰNG TAY/CHUỘT -->
+    <div id="fogControls" class="fixed top-6 right-6 z-50 flex items-center gap-3 pointer-events-auto">
+        <button onclick="clearAllFog()" class="px-4 py-2 rounded-full bg-white/10 hover:bg-pink-600/40 border border-pink-400/40 text-pink-200 text-xs backdrop-blur-md transition-all shadow-lg flex items-center gap-2">
+            <i class="fa-solid fa-wand-magic-sparkles text-pink-300"></i> Lau sạch sương mù
+        </button>
+    </div>
+
+    <!-- CANVAS NỀN: HIỆU ỨNG SAO & TRÁI TIM BAY -->
+    <canvas id="particleCanvas"></canvas>
+
+    <!-- HƠI ẤM GLOW BÊN DƯỚI -->
+    <div class="glow-heart-bg"></div>
+
+    <!-- CÁC THẺ LỜI CHÚC MÂY BAY BỒNG BỀNH -->
+    <div id="tagsContainer" class="w-full h-full absolute inset-0 pointer-events-none z-10"></div>
+
+    <!-- HEADER / TOP BAR -->
+    <header class="w-full pt-6 px-4 text-center z-20 relative">
+        <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 border border-pink-500/30 text-pink-300 text-xs tracking-widest uppercase">
+            <i class="fa-solid fa-sparkles text-pink-400"></i> Dành tặng người phụ nữ thương yêu
+        </div>
+    </header>
+
+    <!-- KHU VỰC NỘI DUNG CHÍNH (HÉ LỘ SAU LỚP SƯƠNG) -->
+    <main class="w-full max-w-4xl px-4 flex flex-col items-center text-center my-auto z-20 relative">
+        <p class="font-cursive text-2xl md:text-3xl text-pink-300 mb-1 opacity-90 text-glow">
+            ĐẰNG SAU LỚP SƯƠNG MỜ NÀY LÀ LỜI CHÚC DÀNH CHO NGƯỜI PHỤ NỮ 
+        </p>
+        <p class="font-cursive text-2xl md:text-3xl text-pink-300 mb-1 opacity-90 text-glow">
+            PHAN NGUYỄN THUỲ NHUNG
+        </p>
+        <h2 class="text-xs md:text-sm font-semibold tracking-widest text-pink-200/80 uppercase mb-2">
+            CHÚC MỪNG NGÀY
+        </h2>
+        <h1 class="text-6xl md:text-8xl font-extrabold tracking-tight font-serif-title title-glow bg-clip-text text-transparent bg-gradient-to-r from-pink-300 via-pink-100 to-purple-300 my-1">
+            20 · 10
+        </h1>
+        <h3 class="text-xl md:text-2xl font-bold tracking-wider text-pink-200 uppercase mt-1 mb-6">
+            PHỤ NỮ VIỆT NAM
+        </h3>
+
+        <!-- Trái tim nhịp đập trung tâm -->
+        <div class="my-3 cursor-pointer" onclick="openModal()">
+            <div class="w-16 h-16 md:w-20 md:h-20 rounded-full bg-pink-600/30 border border-pink-400/50 flex items-center justify-center shadow-[0_0_30px_rgba(236,72,153,0.6)] hover:scale-110 transition-transform duration-300 group">
+                <i class="fa-solid fa-heart text-3xl md:text-4xl text-pink-500 group-hover:text-pink-300 heart-beat"></i>
+            </div>
+            <p class="text-xs text-pink-300/80 mt-2 animate-pulse">Chạm vào đây để mở bức thư tình cảm <i class="fa-solid fa-envelope-open-text ml-1"></i></p>
+        </div>
+
+        <!-- Nút Mở Bức Thư Lời Chúc -->
+        <button onclick="openModal()" class="mt-4 px-8 py-3 rounded-full btn-shimmer text-white font-semibold shadow-[0_0_25px_rgba(236,72,153,0.5)] hover:shadow-[0_0_35px_rgba(236,72,153,0.8)] hover:scale-105 active:scale-95 transition-all duration-300 flex items-center gap-2">
+            <i class="fa-solid fa-envelope-open-heart"></i>
+            <span>BEST WISHES FROM TRẦN QUỐC BÌNH</span>
+        </button>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="w-full pb-6 text-center z-20 text-xs text-pink-300/60 font-light">
+        <p>Gửi gắm tất cả chân thành & sự yêu thương 💕</p>
+    </footer>
+
+    <!-- MODAL BỨC THƯ CHÚC MỪNG -->
+    <div id="letterModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-md opacity-0 pointer-events-none transition-all duration-500">
+        <div id="modalContent" class="glass-card w-full max-w-lg rounded-2xl p-6 md:p-8 text-left relative transform scale-90 transition-all duration-500 border border-pink-500/40">
+            
+            <button onclick="closeModal()" class="absolute top-4 right-4 w-9 h-9 rounded-full bg-white/10 hover:bg-pink-500/30 text-pink-200 flex items-center justify-center transition-colors">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+
+            <div class="flex items-center gap-3 border-b border-pink-500/30 pb-4 mb-4">
+                <div class="w-10 h-10 rounded-full bg-pink-500/20 flex items-center justify-center text-pink-300 text-xl">
+                    <i class="fa-solid fa-heart-pulse"></i>
+                </div>
+                <div>
+                    <h3 class="font-bold text-lg text-pink-200">Gửi PHAN NGUYỄN THUỲ NHUNG Lời Chúc 20/10</h3>
+                    <p class="text-xs text-pink-300/70">Dành cho người phụ nữ dịu dàng nhất</p>
+                </div>
+            </div>
+
+            <div class="space-y-3 text-pink-100/90 text-sm md:text-base leading-relaxed max-h-[60vh] overflow-y-auto pr-2 custom-scroll font-light">
+                <p class="font-cursive text-xl text-pink-300">Thương gửi nhung,</p>
+                <p>
+                    Nhân ngày Phụ nữ Việt Nam 20/10, chúc cho bạn luôn tràn ngập niềm vui, nụ cười luôn tự tin trên môi và bình yên luôn hiện hữu trong tâm hồn.
+                </p>
+                <p>
+                    Mong rằng mỗi ngày trôi qua với bạn đều nhẹ nhàng , rạng rỡ như ánh nắng và nhận được thật nhiều yêu thương ấm áp.
+                </p>
+                <p class="text-right font-cursive text-lg text-pink-300 pt-2">
+                    — Luôn thương & trân trọng ✨
+                </p>
+            </div>
+
+            <div class="mt-6 pt-3 border-t border-pink-500/20 flex justify-end">
+                <button onclick="closeModal()" class="px-5 py-2 rounded-xl bg-pink-600/40 hover:bg-pink-600/70 text-pink-100 text-sm font-medium transition-all duration-300 border border-pink-400/30">
+                    Cảm ơn lời chúc <i class="fa-solid fa-heart ml-1 text-pink-400"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- 1. SƯƠNG MÙ CHE PHỦ (SCRATCHABLE FOG LAYER) ---
+        const fogCanvas = document.getElementById('fogCanvas');
+        const fogCtx = fogCanvas.getContext('2d');
+        let isDrawing = false;
+
+        function initFog() {
+            fogCanvas.width = window.innerWidth;
+            fogCanvas.height = window.innerHeight;
+
+            // Phủ màu sương mù xám tím mờ đục
+            fogCtx.save();
+            const gradient = fogCtx.createRadialGradient(
+                fogCanvas.width / 2, fogCanvas.height / 2, 100,
+                fogCanvas.width / 2, fogCanvas.height / 2, Math.max(fogCanvas.width, fogCanvas.height)
+            );
+            gradient.addColorStop(0, 'rgba(40, 25, 55, 0.95)');
+            gradient.addColorStop(1, 'rgba(15, 8, 25, 0.98)');
+            fogCtx.fillStyle = gradient;
+            fogCtx.fillRect(0, 0, fogCanvas.width, fogCanvas.height);
+
+            // Thêm các hạt khói mờ ảo lên nền sương
+            for (let i = 0; i < 150; i++) {
+                fogCtx.fillStyle = `rgba(255, 230, 245, ${Math.random() * 0.08})`;
+                fogCtx.beginPath();
+                fogCtx.arc(Math.random() * fogCanvas.width, Math.random() * fogCanvas.height, Math.random() * 120 + 40, 0, Math.PI * 2);
+                fogCtx.fill();
+            }
+
+            // Hướng dẫn người dùng lau sương bằng chữ
+            fogCtx.font = "600 20px 'Montserrat', sans-serif";
+            fogCtx.fillStyle = "rgba(244, 114, 182, 0.85)";
+            fogCtx.textAlign = "center";
+            fogCtx.shadowColor = "rgba(236, 72, 153, 0.8)";
+            fogCtx.shadowBlur = 15;
+            fogCtx.fillText("👉 Dùng chuột hoặc ngón tay lau lớp sương mờ này nhé 👈", fogCanvas.width / 2, fogCanvas.height / 2);
+            
+            fogCtx.font = "italic 16px 'Dancing Script', cursive";
+            fogCtx.fillStyle = "rgba(255, 255, 255, 0.7)";
+            fogCtx.fillText("Món quà bất ngờ đang giấu phía sau...", fogCanvas.width / 2, fogCanvas.height / 2 + 35);
+            fogCtx.restore();
+        }
+
+        // Xóa sương mù tại vị trí di chuyển chuột/chạm
+        function scratch(x, y) {
+            fogCtx.save();
+            fogCtx.globalCompositeOperation = 'destination-out';
+            
+            // Tạo nét lau mềm mại dạng Radial Gradient
+            const radius = 55;
+            const eraser = fogCtx.createRadialGradient(x, y, radius * 0.2, x, y, radius);
+            eraser.addColorStop(0, 'rgba(0, 0, 0, 1)');
+            eraser.addColorStop(1, 'rgba(0, 0, 0, 0)');
+
+            fogCtx.fillStyle = eraser;
+            fogCtx.beginPath();
+            fogCtx.arc(x, y, radius, 0, Math.PI * 2);
+            fogCtx.fill();
+            fogCtx.restore();
+
+            // Tạo vài giọt sương nhẹ / trái tim lấp lánh rơi ra từ nét lau
+            if (Math.random() < 0.3) {
+                createHeartExplosion(x, y, 2);
+            }
+        }
+
+        // Xử lý sự kiện Chuột & Cảm ứng
+        function getCoords(e) {
+            if (e.touches && e.touches.length > 0) {
+                return { x: e.touches[0].clientX, y: e.touches[0].clientY };
+            }
+            return { x: e.clientX, y: e.clientY };
+        }
+
+        ['mousedown', 'touchstart'].forEach(evt => {
+            fogCanvas.addEventListener(evt, (e) => {
+                isDrawing = true;
+                const { x, y } = getCoords(e);
+                scratch(x, y);
+            });
+        });
+
+        ['mousemove', 'touchmove'].forEach(evt => {
+            fogCanvas.addEventListener(evt, (e) => {
+                if (isDrawing) {
+                    const { x, y } = getCoords(e);
+                    scratch(x, y);
+                }
+            });
+        });
+
+        ['mouseup', 'touchend'].forEach(evt => {
+            window.addEventListener(evt, () => { isDrawing = false; });
+        });
+
+        // Nút Lau Sạch Toàn Bộ Sương Mù
+        function clearAllFog() {
+            fogCanvas.style.opacity = '0';
+            setTimeout(() => {
+                fogCanvas.style.display = 'none';
+            }, 1000);
+            createHeartExplosion(window.innerWidth / 2, window.innerHeight / 2, 35);
+        }
+
+        // --- 2. CÁC THẺ LỜI CHÚC MÂY BAY BỒNG BỀNH ---
+        const wishTags = [
+            { text: "Bình yên, nhẹ nhàng ✨", x: 12, y: 22 },
+            { text: "Luôn xinh đẹp 🌸", x: 74, y: 18 },
+            { text: "Dịu dàng, yêu thương 💕", x: 14, y: 72 },
+            { text: "Thật hạnh phúc 💖", x: 78, y: 72 },
+            { text: "Năng lượng rực rỡ 🌟", x: 80, y: 44 },
+            { text: "Mọi điều như ý 🍀", x: 10, y: 46 },
+            { text: "Mãi mãi rạng rỡ 🌷", x: 45, y: 82 }
+        ];
+
+        function initTags() {
+            const container = document.getElementById('tagsContainer');
+            container.innerHTML = '';
+            
+            wishTags.forEach((tag, idx) => {
+                const el = document.createElement('div');
+                el.className = 'floating-tag';
+                el.innerText = tag.text;
+                el.style.left = tag.x + '%';
+                el.style.top = tag.y + '%';
+                el.style.animationDelay = (idx * 0.7) + 's';
+                el.style.animationDuration = (5.5 + (idx % 3)) + 's';
+                
+                el.onclick = () => {
+                    createHeartExplosion(window.innerWidth * (tag.x/100), window.innerHeight * (tag.y/100), 18);
+                };
+
+                container.appendChild(el);
+            });
+        }
+
+        // --- 3. CANVAS HẠT SAO & TRÁI TIM BAY ---
+        const canvas = document.getElementById('particleCanvas');
+        const ctx = canvas.getContext('2d');
+
+        let width, height;
+        let particles = [];
+        let heartParticles = [];
+
+        function resizeCanvas() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+            initFog(); // Vẽ lại lớp sương nếu thay đổi kích thước
+        }
+
+        window.addEventListener('resize', resizeCanvas);
+
+        class Particle {
+            constructor() { this.reset(); }
+
+            reset() {
+                this.x = Math.random() * width;
+                this.y = Math.random() * height;
+                this.size = Math.random() * 2 + 0.5;
+                this.speedX = (Math.random() - 0.5) * 0.3;
+                this.speedY = (Math.random() - 0.5) * 0.3;
+                this.alpha = Math.random() * 0.8 + 0.2;
+                this.alphaSpeed = Math.random() * 0.01 + 0.005;
+                this.color = Math.random() > 0.3 ? '#fbcfe8' : '#e9d5ff';
+            }
+
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                this.alpha += this.alphaSpeed;
+                if (this.alpha > 0.9 || this.alpha < 0.2) this.alphaSpeed = -this.alphaSpeed;
+                if (this.x < 0 || this.x > width || this.y < 0 || this.y > height) this.reset();
+            }
+
+            draw() {
+                ctx.save();
+                ctx.globalAlpha = this.alpha;
+                ctx.fillStyle = this.color;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.restore();
+            }
+        }
+
+        class FloatingHeart {
+            constructor(x, y, isExplosion = false) {
+                this.x = x || Math.random() * width;
+                this.y = y || height + 20;
+                this.size = Math.random() * 12 + 8;
+                this.speedY = isExplosion ? (Math.random() - 0.5) * 7 : -(Math.random() * 1.5 + 0.8);
+                this.speedX = isExplosion ? (Math.random() - 0.5) * 7 : (Math.random() - 0.5) * 1;
+                this.alpha = 1;
+                this.decay = isExplosion ? Math.random() * 0.025 + 0.015 : 0.003;
+                this.color = `hsl(${Math.random() * 40 + 330}, 100%, 75%)`;
+                this.rotation = Math.random() * Math.PI * 2;
+                this.rotSpeed = (Math.random() - 0.5) * 0.05;
+            }
+
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                this.alpha -= this.decay;
+                this.rotation += this.rotSpeed;
+            }
+
+            draw() {
+                if (this.alpha <= 0) return;
+                ctx.save();
+                ctx.globalAlpha = this.alpha;
+                ctx.translate(this.x, this.y);
+                ctx.rotate(this.rotation);
+                ctx.fillStyle = this.color;
+                
+                const topCurveHeight = this.size * 0.3;
+                ctx.beginPath();
+                ctx.moveTo(0, topCurveHeight);
+                ctx.bezierCurveTo(0, 0, -this.size / 2, 0, -this.size / 2, topCurveHeight);
+                ctx.bezierCurveTo(-this.size / 2, (this.size + topCurveHeight) / 2, 0, this.size, 0, this.size);
+                ctx.bezierCurveTo(0, this.size, this.size / 2, (this.size + topCurveHeight) / 2, this.size / 2, topCurveHeight);
+                ctx.bezierCurveTo(this.size / 2, 0, 0, 0, 0, topCurveHeight);
+                ctx.closePath();
+                ctx.fill();
+                ctx.restore();
+            }
+        }
+
+        for (let i = 0; i < 100; i++) particles.push(new Particle());
+
+        function createHeartExplosion(x, y, count = 15) {
+            for (let i = 0; i < count; i++) {
+                heartParticles.push(new FloatingHeart(x, y, true));
+            }
+        }
+
+        window.addEventListener('click', (e) => {
+            if (e.target.closest('button') || e.target.closest('#modalContent') || e.target.id === 'fogCanvas') return;
+            createHeartExplosion(e.clientX, e.clientY);
+        });
+
+        function animate() {
+            ctx.clearRect(0, 0, width, height);
+
+            particles.forEach(p => {
+                p.update();
+                p.draw();
+            });
+
+            if (Math.random() < 0.08) {
+                heartParticles.push(new FloatingHeart());
+            }
+
+            for (let i = heartParticles.length - 1; i >= 0; i--) {
+                const h = heartParticles[i];
+                h.update();
+                h.draw();
+                if (h.alpha <= 0 || h.y < -50) {
+                    heartParticles.splice(i, 1);
+                }
+            }
+
+            requestAnimationFrame(animate);
+        }
+
+        // --- 4. BỨC THƯ LỜI CHÚC (MODAL) ---
+        const modal = document.getElementById('letterModal');
+        const modalContent = document.getElementById('modalContent');
+
+        function openModal() {
+            modal.classList.remove('opacity-0', 'pointer-events-none');
+            modalContent.classList.remove('scale-90');
+            modalContent.classList.add('scale-100');
+            createHeartExplosion(window.innerWidth / 2, window.innerHeight / 2, 25);
+        }
+
+        function closeModal() {
+            modal.classList.add('opacity-0', 'pointer-events-none');
+            modalContent.classList.remove('scale-100');
+            modalContent.classList.add('scale-90');
+        }
+
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) closeModal();
+        });
+
+        // Khởi tạo trang web
+        window.onload = () => {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+            initFog();
+            initTags();
+            animate();
+        };
+    </script>
+</body>
+</html>
